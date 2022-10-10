@@ -1,14 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uts_2020130041.FXMLDocumentController">
-    <children>
-        <Button layoutX="126" layoutY="90" text="Click Me!" onAction="#handleButtonAction" fx:id="button" />
-        <Label layoutX="126" layoutY="120" minHeight="16" minWidth="69" fx:id="label" />
-    </children>
+<AnchorPane id="AnchorPane" prefHeight="497.0" prefWidth="566.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uts_2020130041.FXMLDocumentController">
+   <children>
+      <ToggleButton fx:id="tgla1" layoutX="78.0" layoutY="354.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="A1" />
+      <ToggleButton fx:id="tgla2" layoutX="124.0" layoutY="354.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="A2" />
+      <ToggleButton fx:id="tgla3" layoutX="171.0" layoutY="354.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="A3" />
+      <ToggleButton fx:id="tgla4" layoutX="217.0" layoutY="354.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="A4" />
+      <ToggleButton fx:id="tgla5" layoutX="78.0" layoutY="389.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="A5" />
+      <ToggleButton fx:id="tgla6" layoutX="124.0" layoutY="389.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="A6" />
+      <ToggleButton fx:id="tgla7" layoutX="171.0" layoutY="389.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="A7" />
+      <ToggleButton fx:id="tgla8" layoutX="217.0" layoutY="389.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="A8" />
+      <ToggleButton fx:id="tglb8" layoutX="465.0" layoutY="389.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="B8" />
+      <ToggleButton fx:id="tglb7" layoutX="419.0" layoutY="389.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="B7" />
+      <ToggleButton fx:id="tglb6" layoutX="372.0" layoutY="389.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="B6" />
+      <ToggleButton fx:id="tglb5" layoutX="326.0" layoutY="389.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="B5" />
+      <ToggleButton fx:id="tglb4" layoutX="465.0" layoutY="354.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="B4" />
+      <ToggleButton fx:id="tglb3" layoutX="419.0" layoutY="354.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="B3" />
+      <ToggleButton fx:id="tglb2" layoutX="372.0" layoutY="354.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="B2" />
+      <ToggleButton fx:id="tglb1" layoutX="326.0" layoutY="354.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="37.0" text="B1" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fdfeff" height="55.0" layoutX="76.0" layoutY="278.0" stroke="BLACK" strokeType="INSIDE" width="429.0" />
+      <Text layoutX="256.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Layar">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Text>
+      <Text layoutX="331.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Judul Film" />
+      <Text layoutX="331.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Id Jadwal" />
+      <Text layoutX="32.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nama Pemesan" />
+      <Text layoutX="34.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nomor Hp" />
+      <Text layoutX="34.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
+      <Text layoutX="215.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pemesanan Tiket XXII">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Text>
+      <TextField fx:id="txtnama" layoutX="132.0" layoutY="64.0" />
+      <TextField fx:id="txthp" layoutX="132.0" layoutY="99.0" />
+      <TextField fx:id="txtemail" layoutX="132.0" layoutY="134.0" />
+      <Text layoutX="329.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jam Tayang" />
+      <TextField fx:id="txtJamTayang" editable="false" layoutX="403.0" layoutY="134.0" />
+      <Button fx:id="btnbatal" layoutX="93.0" layoutY="236.0" mnemonicParsing="false" onAction="#batalklik" text="Batal" />
+      <Button fx:id="btnpesan" layoutX="377.0" layoutY="236.0" mnemonicParsing="false" onAction="#pesanklik" text="Pesan" />
+      <Text layoutX="30.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jumlah tiket" />
+      <TextField fx:id="txtjumlahtiket" editable="false" layoutX="132.0" layoutY="170.0" />
+      <Button fx:id="btnlihatmaster" layoutX="256.0" layoutY="236.0" mnemonicParsing="false" onAction="#lihatmasterklik" text="Lihat Data" />
+      <Text layoutX="329.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jam Selesai" />
+      <TextField fx:id="txtJamSelesai" editable="false" layoutX="403.0" layoutY="170.0" />
+      <ComboBox fx:id="ComboFilm" layoutX="406.0" layoutY="64.0" prefHeight="25.0" prefWidth="99.0" />
+      <ComboBox fx:id="CBJadwal" layoutX="407.0" layoutY="99.0" onAction="#UbahKursi" prefHeight="25.0" prefWidth="99.0" />
+      <Text layoutX="328.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Harga Total" />
+      <TextField fx:id="txtharga" editable="false" layoutX="403.0" layoutY="202.0" />
+      <Button layoutX="168.0" layoutY="236.0" mnemonicParsing="false" onAction="#HitungKlik" text="Hitung" />
+   </children>
 </AnchorPane>
