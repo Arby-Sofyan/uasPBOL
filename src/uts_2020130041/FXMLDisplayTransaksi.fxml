@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="610.0" prefWidth="708.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uts_2020130041.FXMLDisplayTransaksiController">
+   <children>
+      <Label layoutX="208.0" layoutY="25.0" text="Display Transaksi Penjualan">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tbvmaster" layoutX="58.0" layoutY="115.0" onMouseClicked="#TampilkanDetil" prefHeight="200.0" prefWidth="590.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
+      <TableView fx:id="tbvdetil" layoutX="58.0" layoutY="382.0" prefHeight="163.0" prefWidth="590.0">
+         <columns>
+            <TableColumn prefWidth="75.0" text="C1" />
+            <TableColumn prefWidth="75.0" text="C2" />
+         </columns>
+      </TableView>
+      <Label layoutX="58.0" layoutY="90.0" text="Tabel Transaksi">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="58.0" layoutY="357.0" text="Tabel Detil Transaksi">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Button layoutX="580.0" layoutY="571.0" mnemonicParsing="false" onAction="#tutup" prefHeight="25.0" prefWidth="68.0" text="Tutup" />
+      <TextField fx:id="txtcari" layoutX="498.0" layoutY="78.0" onKeyPressed="#Search" />
+      <Label layoutX="442.0" layoutY="78.0" text="Search">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

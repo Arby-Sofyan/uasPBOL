@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="268.0" prefWidth="348.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="uts_2020130041.FXMLTambahFilmController">
+   <children>
+      <Button layoutX="220.0" layoutY="195.0" mnemonicParsing="false" onAction="#tambah" text="Tambah">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="150.0" layoutY="195.0" mnemonicParsing="false" onAction="#batal" text="Batal">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Label layoutX="40.0" layoutY="110.0" text="Judul Film">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtjudul" layoutX="150.0" layoutY="111.0" />
+      <Label layoutX="130.0" layoutY="110.0" text=":">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="40.0" layoutY="42.0" text="Input Data Film">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="130.0" layoutY="150.0" text=":">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtgenre" layoutX="150.0" layoutY="150.0" />
+      <Label layoutX="40.0" layoutY="150.0" text="Genre">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

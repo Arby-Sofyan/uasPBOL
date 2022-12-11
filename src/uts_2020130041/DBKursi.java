@@ -15,60 +15,29 @@ import javafx.collections.ObservableList;
  * @author Arby Sofyan
  */
 public class DBKursi {
-    private Detail_KursiModel dt = new Detail_KursiModel();
 
-    public Detail_KursiModel getDetail_KursiModel() {
-        return dt;
-    }
-
-    public void setDetail_KursiModel(Detail_KursiModel s) {
-        dt = s;
-    }
-
-    //LookUP
-    /*
-    public ObservableList<Detail_KursiModel> LookUp(String fld, String dt) {
-        try {
-            ObservableList<Detail_KursiModel> tableData = FXCollections.observableArrayList();
-            Koneksi con = new Koneksi();
-            con.bukaKoneksi();
-            con.statement = con.dbKoneksi.createStatement();
-            ResultSet rs = con.statement.executeQuery("Select NPM, Nama, Alamat from jadwal_film where " + fld + " like '%" + dt + "%'");
-            int i = 1;
-            while (rs.next()) {
-                Detail_KursiModel d = new Detail_KursiModel();
-                d.setNPM(rs.getString("NPM"));
-                d.setNama(rs.getString("Nama"));
-                d.setAlamat(rs.getString("Alamat"));
-                tableData.add(d);
-                i++;
-            }
-            con.tutupKoneksi();
-            return tableData;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }*/
+    private ModelKursi dt = new ModelKursi();
+    public ModelKursi getModelKursi() {return dt;}
+    public void setModelKursi(ModelKursi s) {dt = s;}
 
     
-    public ObservableList<Detail_KursiModel> Load() {
+    public ObservableList<ModelKursi> Load() {
         try {
-            ObservableList<Detail_KursiModel> TableData = FXCollections.observableArrayList();
+            ObservableList<ModelKursi> TableData = FXCollections.observableArrayList();
             Koneksi con = new Koneksi();
             con.bukaKoneksi();
             con.statement = con.dbKoneksi.createStatement();
 
             ResultSet rs = con.statement.executeQuery(
-                    "Select * from detail_kursi ");
-
+                    "Select * from kursi ");
             int i = 1;
             while (rs.next()) {
-                Detail_KursiModel d = new Detail_KursiModel();
-                d.setId_Jadwal(rs.getString("Id_Jadwal"));
-                d.setId_Kursi(rs.getString("Id_Kursi"));
-                d.setStatus(rs.getString("Status"));
-       
+                ModelKursi d = new ModelKursi();
+                d.setId_kursi(rs.getString("id_kursi"));
+                d.setId_jadwal(rs.getString("id_jadwal"));
+                d.setId_studio(rs.getString("id_studio"));
+                d.setNomor_kursi(rs.getString("nomor_kursi"));
+                d.setStatus_kursi(rs.getString("status_kursi"));
                 TableData.add(d);
                 i++;
             }
@@ -80,6 +49,8 @@ public class DBKursi {
             return null;
         }
     }
+    
+   
 
     public int validasi(String nomor) {
         int val = 0;
@@ -87,7 +58,7 @@ public class DBKursi {
             Koneksi con = new Koneksi();
             con.bukaKoneksi();
             con.statement = con.dbKoneksi.createStatement();
-            ResultSet rs = con.statement.executeQuery("select count(*) as jml from detail_kursi where Id_Jadwal = '" + nomor + "'");
+            ResultSet rs = con.statement.executeQuery("select count(*) as jml from kursi where id_kursi = '" + nomor + "'");
             while (rs.next()) {
                 val = rs.getInt("jml");
             }
@@ -97,54 +68,19 @@ public class DBKursi {
         }
         return val;
     }
-
+    
+    
     public boolean insert() {
         boolean berhasil = false;
         Koneksi con = new Koneksi();
         try {
             con.bukaKoneksi();
-            con.preparedStatement = con.dbKoneksi.prepareStatement("insert into detail_kursi (Id_Jadwal, Id_Kursi, Status, ) values (?,?,?)");
-            con.preparedStatement.setString(1, getDetail_KursiModel().getId_Jadwal());
-            con.preparedStatement.setString(2, getDetail_KursiModel().getId_Kursi());
-            con.preparedStatement.setString(3, getDetail_KursiModel().getStatus());
-            con.preparedStatement.executeUpdate();
-            berhasil = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            berhasil = false;
-        } finally {
-            con.tutupKoneksi();
-            return berhasil;
-        }
-    }
-
-    public boolean delete(String nomor) {
-        boolean berhasil = false;
-        Koneksi con = new Koneksi();
-        try {
-            con.bukaKoneksi();;
-            con.preparedStatement = con.dbKoneksi.prepareStatement("delete from detail_kursi where Id_Jadwal  = ? ");
-            con.preparedStatement.setString(1, nomor);
-            con.preparedStatement.executeUpdate();
-            berhasil = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            con.tutupKoneksi();
-            return berhasil;
-        }
-    }
-
-    public boolean update() {
-        boolean berhasil = false;
-        Koneksi con = new Koneksi();
-        try {
-            con.bukaKoneksi();
-            con.preparedStatement = con.dbKoneksi.prepareStatement(
-                    "update detail_kursi set Status = ? where Id_Jadwal = ? and Id_Kursi = ?");
-            con.preparedStatement.setString(1, getDetail_KursiModel().getStatus());
-            con.preparedStatement.setString(2, getDetail_KursiModel().getId_Jadwal());
-            con.preparedStatement.setString(3, getDetail_KursiModel().getId_Kursi());
+            con.preparedStatement = con.dbKoneksi.prepareStatement("insert into kursi (id_kursi, id_jadwal, id_studio, nomor_kursi, status_kursi) values (?,?,?,?,?)");
+            con.preparedStatement.setString(1, getModelKursi().getId_kursi());
+            con.preparedStatement.setString(2, getModelKursi().getId_jadwal());
+            con.preparedStatement.setString(3, getModelKursi().getId_studio());
+            con.preparedStatement.setString(4, getModelKursi().getNomor_kursi());
+            con.preparedStatement.setString(5, getModelKursi().getStatus_kursi());
             con.preparedStatement.executeUpdate();
             berhasil = true;
         } catch (Exception e) {
@@ -156,22 +92,105 @@ public class DBKursi {
         }
     }
     
-    public ArrayList<String> CheckKursi(String nomor){
+    public boolean delete(String nomor) {
+        boolean berhasil = false;
+        Koneksi con = new Koneksi();
+        try {
+            con.bukaKoneksi();;
+            con.preparedStatement = con.dbKoneksi.prepareStatement("delete from kursi where id_kursi  = ? ");
+            con.preparedStatement.setString(1, nomor);
+            con.preparedStatement.executeUpdate();
+            berhasil = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            con.tutupKoneksi();
+            return berhasil;
+        }
+    }
+    
+    public boolean update() {
+        boolean berhasil = false;        
+        Koneksi con = new Koneksi();
+        try {       
+            con.bukaKoneksi();
+            con.preparedStatement = con.dbKoneksi.prepareStatement("update kursi set id_jadwal = ?, id_studio = ?, nomor_kursi = ?, status_kursi = ? where id_kursi = ?");
+            con.preparedStatement.setString(1, getModelKursi().getId_jadwal());
+            con.preparedStatement.setString(2, getModelKursi().getId_studio());
+            con.preparedStatement.setString(3, getModelKursi().getNomor_kursi());
+            con.preparedStatement.setString(4, getModelKursi().getStatus_kursi());
+            con.preparedStatement.setString(5, getModelKursi().getId_kursi());
+            con.preparedStatement.executeUpdate();
+            berhasil = true;
+        } catch (Exception e) {            
+            e.printStackTrace();            
+            berhasil = false;
+        } finally {            
+            con.tutupKoneksi();            
+            return berhasil;        
+        }
+    }
+    
+    public ObservableList<ModelKursi> LookUp(String fld, String dt) {
+        try {
+            ObservableList<ModelKursi> tableData = FXCollections.observableArrayList();
+            Koneksi con = new Koneksi();
+            con.bukaKoneksi();
+            con.statement = con.dbKoneksi.createStatement();
+            ResultSet rs = con.statement.executeQuery("Select * from kursi where " + fld + " like '%" + dt + "%'");
+            int i = 1;
+            while (rs.next()) {
+                ModelKursi d = new ModelKursi();
+                d.setId_kursi(rs.getString("id_kursi"));
+                d.setId_jadwal(rs.getString("id_jadwal"));
+                d.setId_studio(rs.getString("id_studio"));
+                d.setNomor_kursi(rs.getString("nomor_kursi"));
+                d.setStatus_kursi(rs.getString("status_kursi"));
+                tableData.add(d);
+                i++;
+            }
+            con.tutupKoneksi();
+            return tableData;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    
+    public ArrayList<String> ListKursi(String a){
         try {
             ArrayList<String> List = new ArrayList();
             Koneksi con = new Koneksi();            
             con.bukaKoneksi();
             con.statement = con.dbKoneksi.createStatement();
-            ResultSet rs = con.statement.executeQuery("select Status from detail_kursi where Id_Jadwal = '" + nomor + "'");
+            ResultSet rs = con.statement.executeQuery("select status_kursi from kursi where id_jadwal ="+ a);
             while (rs.next()) {
-                List.add(rs.getString("Status"));
+                List.add(rs.getString("status_kursi"));
             }
             return List;
         } catch (Exception e) {            
             e.printStackTrace();            
             return null;        
         }
-        
-        
     }
+    
+    public boolean belikursi(String id){
+        boolean berhasil = false;        
+        Koneksi con = new Koneksi();
+        try {       
+            con.bukaKoneksi();
+            con.preparedStatement = con.dbKoneksi.prepareStatement("update kursi set status_kursi = ? where id_kursi = ?");
+            con.preparedStatement.setString(1, "true");
+            con.preparedStatement.setString(2, id);
+            con.preparedStatement.executeUpdate();
+            berhasil = true;
+        } catch (Exception e) {            
+            e.printStackTrace();            
+            berhasil = false;
+        } finally {            
+            con.tutupKoneksi();            
+            return berhasil;        
+        }
+    }
+    
 }

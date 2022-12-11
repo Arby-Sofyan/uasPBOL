@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="328.0" prefWidth="438.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uts_2020130041.FXMLTambahCustomerController">
+   <children>
+      <Label layoutX="38.0" layoutY="32.0" text="Input Data Member">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="218.0" layoutY="100.0" text=":">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtnama" layoutX="238.0" layoutY="100.0" />
+      <Label layoutX="38.0" layoutY="100.0" text="Nama Customer">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="38.0" layoutY="140.0" text="Email">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtemail" layoutX="238.0" layoutY="140.0" />
+      <Label layoutX="218.0" layoutY="140.0" text=":">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="38.0" layoutY="180.0" text="No Handphone">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtnomorhp" layoutX="238.0" layoutY="180.0" />
+      <Label layoutX="218.0" layoutY="180.0" text=":">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="238.0" layoutY="221.0" mnemonicParsing="false" onAction="#batal" text="Batal">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="308.0" layoutY="221.0" mnemonicParsing="false" onAction="#tambah" text="Tambah">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

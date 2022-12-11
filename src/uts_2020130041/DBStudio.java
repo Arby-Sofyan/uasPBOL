@@ -1,6 +1,7 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package uts_2020130041;
 
@@ -14,32 +15,32 @@ import javafx.collections.ObservableList;
  *
  * @author Arby Sofyan
  */
-public class DBCustomer {
-
-    private ModelCustomer dt = new ModelCustomer();
-    public ModelCustomer getModelCustomer() {return dt;}
-    public void setModelCustomer(ModelCustomer s) {dt = s;}
+public class DBStudio {
+    
+    private ModelStudio dt = new ModelStudio();
+    public ModelStudio getModelStudio() {return dt;}
+    public void setModelStudio(ModelStudio s) {dt = s;}
 
     
-    public ObservableList<ModelCustomer> Load() {
+    public ObservableList<ModelStudio> Load() {
         try {
-            ObservableList<ModelCustomer> TableData = FXCollections.observableArrayList();
+            ObservableList<ModelStudio> TableData = FXCollections.observableArrayList();
             Koneksi con = new Koneksi();
             con.bukaKoneksi();
             con.statement = con.dbKoneksi.createStatement();
-            
+
             ResultSet rs = con.statement.executeQuery(
-                    "Select * from customer ");
+                    "Select * from studio ");
             int i = 1;
             while (rs.next()) {
-                ModelCustomer d = new ModelCustomer();
-                d.setId_customer(rs.getString("id_customer"));
-                d.setEmail(rs.getString("email"));
-                d.setNama(rs.getString("nama"));
-                d.setNohp(rs.getString("nohp"));
+                ModelStudio d = new ModelStudio();
+                d.setId_studio(rs.getString("id_studio"));
+                d.setNama_studio(rs.getString("nama_studio"));
+                d.setJumlah_kursi(rs.getInt("jumlah_kursi"));
                 TableData.add(d);
                 i++;
             }
+
             con.tutupKoneksi();
             return TableData;
         } catch (Exception e) {
@@ -56,7 +57,7 @@ public class DBCustomer {
             Koneksi con = new Koneksi();
             con.bukaKoneksi();
             con.statement = con.dbKoneksi.createStatement();
-            ResultSet rs = con.statement.executeQuery("select count(*) as jml from customer where id_customer = '" + nomor + "'");
+            ResultSet rs = con.statement.executeQuery("select count(*) as jml from studio where id_studio = '" + nomor + "'");
             while (rs.next()) {
                 val = rs.getInt("jml");
             }
@@ -73,11 +74,10 @@ public class DBCustomer {
         Koneksi con = new Koneksi();
         try {
             con.bukaKoneksi();
-            con.preparedStatement = con.dbKoneksi.prepareStatement("insert into customer (id_customer, nama, email, nohp) values (?,?,?,?)");
-            con.preparedStatement.setString(1, getModelCustomer().getId_customer());
-            con.preparedStatement.setString(2, getModelCustomer().getNama());
-            con.preparedStatement.setString(3, getModelCustomer().getEmail());
-            con.preparedStatement.setString(4, getModelCustomer().getNohp());
+            con.preparedStatement = con.dbKoneksi.prepareStatement("insert into studio (id_studio, nama_studio, jumlah_kursi) values (?,?,?)");
+            con.preparedStatement.setString(1, getModelStudio().getId_studio());
+            con.preparedStatement.setString(2, getModelStudio().getNama_studio());
+            con.preparedStatement.setInt(3, getModelStudio().getJumlah_kursi());
             con.preparedStatement.executeUpdate();
             berhasil = true;
         } catch (Exception e) {
@@ -94,7 +94,7 @@ public class DBCustomer {
         Koneksi con = new Koneksi();
         try {
             con.bukaKoneksi();;
-            con.preparedStatement = con.dbKoneksi.prepareStatement("delete from customer where id_customer  = ? ");
+            con.preparedStatement = con.dbKoneksi.prepareStatement("delete from studio where id_studio  = ? ");
             con.preparedStatement.setString(1, nomor);
             con.preparedStatement.executeUpdate();
             berhasil = true;
@@ -111,11 +111,10 @@ public class DBCustomer {
         Koneksi con = new Koneksi();
         try {       
             con.bukaKoneksi();
-            con.preparedStatement = con.dbKoneksi.prepareStatement("update customer set nama = ?, email = ?, nohp = ? where  id_customer = ?");
-            con.preparedStatement.setString(1, getModelCustomer().getNama());           
-            con.preparedStatement.setString(2, getModelCustomer().getEmail()); 
-            con.preparedStatement.setString(3, getModelCustomer().getNohp());
-            con.preparedStatement.setString(4, getModelCustomer().getId_customer());
+            con.preparedStatement = con.dbKoneksi.prepareStatement("update studio set nama_studio = ?, jumlah_kursi = ? where  id_studio = ?");
+            con.preparedStatement.setString(1, getModelStudio().getNama_studio());           
+            con.preparedStatement.setInt(2, getModelStudio().getJumlah_kursi()); 
+            con.preparedStatement.setString(3, getModelStudio().getId_studio());
             con.preparedStatement.executeUpdate();
             berhasil = true;
         } catch (Exception e) {            
@@ -127,20 +126,19 @@ public class DBCustomer {
         }
     }
     
-    public ObservableList<ModelCustomer> LookUp(String col, String fld, String dt) {
+    public ObservableList<ModelStudio> LookUp(String fld, String dt) {
         try {
-            ObservableList<ModelCustomer> tableData = FXCollections.observableArrayList();
+            ObservableList<ModelStudio> tableData = FXCollections.observableArrayList();
             Koneksi con = new Koneksi();
             con.bukaKoneksi();
             con.statement = con.dbKoneksi.createStatement();
-            ResultSet rs = con.statement.executeQuery("Select "+col+" from customer where " + fld + " like '%" + dt + "%'");
+            ResultSet rs = con.statement.executeQuery("Select * from studio where " + fld + " like '%" + dt + "%'");
             int i = 1;
             while (rs.next()) {
-                ModelCustomer d = new ModelCustomer();
-                d.setId_customer(rs.getString("id_customer"));
-                d.setNama(rs.getString("nama"));
-                d.setEmail(rs.getString("email"));
-                d.setNohp(rs.getString("nohp"));
+                ModelStudio d = new ModelStudio();
+                d.setId_studio(rs.getString("id_studio"));
+                d.setNama_studio(rs.getString("nama"));
+                d.setJumlah_kursi(rs.getInt("email"));
                 tableData.add(d);
                 i++;
             }
@@ -158,9 +156,9 @@ public class DBCustomer {
             Koneksi con = new Koneksi();            
             con.bukaKoneksi();
             con.statement = con.dbKoneksi.createStatement();
-            ResultSet rs = con.statement.executeQuery("select id_customer from customer");
+            ResultSet rs = con.statement.executeQuery("select id_studio from studio");
             while (rs.next()) {
-                List.add(rs.getString("id_customer"));
+                List.add(rs.getString("id_studio"));
             }
             return List;
         } catch (Exception e) {            
@@ -168,6 +166,5 @@ public class DBCustomer {
             return null;        
         }
     }
-    
     
 }

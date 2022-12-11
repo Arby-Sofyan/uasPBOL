@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="224.0" prefWidth="375.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="uts_2020130041.FXMLTambahStudioController">
+   <children>
+      <Button layoutX="254.0" layoutY="155.0" mnemonicParsing="false" onAction="#tambah" text="Tambah">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="184.0" layoutY="155.0" mnemonicParsing="false" onAction="#batal" text="Batal">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Label layoutX="40.0" layoutY="110.0" text="Nama Studio ">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtnama" layoutX="184.0" layoutY="110.0" />
+      <Label layoutX="164.0" layoutY="110.0" text=":">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="91.0" layoutY="34.0" text="Input Data Studio">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

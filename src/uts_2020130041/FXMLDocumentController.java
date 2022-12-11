@@ -6,8 +6,11 @@ package uts_2020130041;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -31,13 +35,15 @@ import javafx.stage.Stage;
  */
 public class FXMLDocumentController implements Initializable {
 
-    String[] ListJudul = {"Pamali", "Miracle in Cell No.7", "End Game"};
-    String[] ListJadwal = {"401", "402", "403"};
 
     public static DBFilm dtfilm = new DBFilm();
     public static DBTransaksi dttrans = new DBTransaksi();
     public static DBKursi dtkursi = new DBKursi();
-
+    public static DBCustomer dtcust = new DBCustomer();
+    public static DBJadwal dtjadwal = new DBJadwal();
+    public static DBStudio dtstudio = new DBStudio();
+    public static DBDetilTransaksi dtdetil = new DBDetilTransaksi();
+    public static String[] transaksi = new String[5];
     private ArrayList<String> ListKursi = new ArrayList<>();
     @FXML
     private ToggleButton tgla1;
@@ -71,440 +77,376 @@ public class FXMLDocumentController implements Initializable {
     private ToggleButton tglb2;
     @FXML
     private ToggleButton tglb1;
-    @FXML
-    private TextField txtnama;
-    @FXML
-    private TextField txthp;
-    @FXML
-    private TextField txtemail;
-    @FXML
-    private Button btnbatal;
-    @FXML
-    private Button btnpesan;
-    @FXML
-    private TextField txtjumlahtiket;
-    @FXML
-    private Button btnlihatmaster;
-    @FXML
-    private TextField txtJamTayang;
-    @FXML
-    private TextField txtJamSelesai;
-    @FXML
     private ComboBox<String> ComboFilm;
-    @FXML
     private ComboBox<String> CBJadwal;
     @FXML
-    private TextField txtharga;
+    private Text lnama;
+    @FXML
+    private Text lnomor;
+    @FXML
+    private Text lemail;
+    @FXML
+    private Text lselesai;
+    @FXML
+    private Text lnamastudio;
+    @FXML
+    private Text lnamafilm;
+    @FXML
+    private Text ltanggal;
+    @FXML
+    private Text lmulai;
+    @FXML
+    private Text ljadwal;
+    @FXML
+    private Text lidcust;
+    @FXML
+    private Text jumlahtiket;
+    @FXML
+    private Text total;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
 
-        dtfilm.Load();
-        ComboFilm.getItems().addAll(ListJudul);
-        CBJadwal.getItems().addAll(ListJadwal);
 
     }
-//    diaftar Id
+//    daftar Id
 //            customer 1
 //            transaksi 2
 //            kursi 3
 //            jadwal 4
+    //        studio 5
+    //        film 6
     boolean editdata = false;
     public static int harga;
-//    public void execute(Jadwal_FilmModel d) {
-//        if (!d.getNPM().isEmpty()) {
-//            editdata = true;
-//            txtnpm.setText(d.getNPM());
-//            txtnama.setText(d.getNama());
-//            txtalamat.setText(d.getAlamat());
-//            txtnpm.setEditable(false);
-//            txtnama.requestFocus();
-//        }
-//    }
-
-    @FXML
     private void batalklik(ActionEvent event) {
+        
+    }
+    @FXML
+    private void pilihcust(ActionEvent event) {
+        try{
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("FXMLPilihCustomer.fxml"));    
+        Parent root = (Parent)loader.load();
+        FXMLPilihCustomerController isidt=(FXMLPilihCustomerController)loader.getController();
+        Scene scene = new Scene(root);
+        Stage stg=new Stage();
+        stg.initModality(Modality.APPLICATION_MODAL);
+        stg.setResizable(false);
+        stg.setIconified(false);
+        stg.setScene(scene);
+        stg.showAndWait();
+        if(isidt.getHasil()==1){
+            ModelCustomer d = isidt.getModelCustomer();
+            lidcust.setText(d.getId_customer());
+            lnama.setText(d.getNama());
+            lnomor.setText(d.getNohp());
+            lemail.setText(d.getEmail());
+            
+        }
+        } catch (IOException e){   e.printStackTrace();   }
     }
 
     @FXML
-    private void pesanklik(ActionEvent event) {
-        TransaksiModel s = new TransaksiModel();
-        s.setId_Customer(txtnama.getText());
-        s.setJudul_Film(ComboFilm.getSelectionModel().getSelectedItem());
-        int jumlah = HitungTiket();
-        s.setJam_Mulai(null);
-        s.setJam_Selesai(null);
-        s.setJumlah_Tiket(Integer.valueOf(jumlah));
-        s.setHarga_Bayar(0);
-        s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-        ArrayList<String> List = dttrans.CheckKode();
-        String urutan;
-        if (!List.isEmpty()) {
-            int urut = Integer.valueOf(List.get(List.size() - 1).substring(1)) + 1;
-            if (urut < 10) {
-                urutan = "0" + String.valueOf(urut);
-            } else {
-                urutan = String.valueOf(urut);
-            }
-        } else {
-            urutan = "01";
+    private void pilihjadwal(ActionEvent event) {
+        try{
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("FXMLPilihJadwal.fxml"));    
+        Parent root = (Parent)loader.load();
+        FXMLPilihJadwalController isidt=(FXMLPilihJadwalController)loader.getController();
+        Scene scene = new Scene(root);
+        Stage stg=new Stage();
+        stg.initModality(Modality.APPLICATION_MODAL);
+        stg.setResizable(false);
+        stg.setIconified(false);
+        stg.setScene(scene);
+        stg.showAndWait();
+        if(isidt.getHasil()==1){
+            ModelJadwal d = isidt.getModelJadwal();
+            ljadwal.setText(d.getId_jadwal());
+            lnamastudio.setText(d.getNama_studio());
+            lnamafilm.setText(d.getJudul_film());
+            ltanggal.setText(String.valueOf(d.getTanggal()));
+            lmulai.setText(String.valueOf(d.getWaktu_mulai()));
+            lselesai.setText(String.valueOf(d.getWaktu_selesai()));
+            UbahKursi();
         }
-        s.setId_Transaksi("2" + urutan);
-
-        dttrans.setTransaksiModel(s);
-
-        if (dttrans.validasi(s.getId_Transaksi()) <= 0) {
-            if (dttrans.insert()) {
-                Alert a = new Alert(Alert.AlertType.INFORMATION, "Data berhasil disimpan", ButtonType.OK);
-                a.showAndWait();
-                batalklik(event);
-            } else {
-                Alert a = new Alert(Alert.AlertType.ERROR, "Data gagal disimpan", ButtonType.OK);
-                a.showAndWait();
-            }
-        } else {
-            Alert a = new Alert(Alert.AlertType.ERROR, "Data sudah ada", ButtonType.OK);
-            a.showAndWait();
-            txtnama.requestFocus();
-        }
-
-        SaveKursi();
-
+        } catch (IOException e){   e.printStackTrace();   }
     }
 
-    @FXML
-    private void lihatmasterklik(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXML_DisplayTransaksi.fxml"));
-            Parent root = (Parent) loader.load();
-            Scene scene = new Scene(root);
-            Stage stg = new Stage();
-            stg.initModality(Modality.APPLICATION_MODAL);
-            stg.setResizable(false);
-            stg.setIconified(false);
-            stg.setScene(scene);
-            stg.show();
-            CBJadwal.getScene().getWindow().hide();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    @FXML
-    private void UbahKursi(ActionEvent event) {
-        ListKursi = dtkursi.CheckKursi(CBJadwal.getSelectionModel().getSelectedItem());
+    
+    private void UbahKursi(){
+    
+        ListKursi = dtkursi.ListKursi(ljadwal.getText());
 
-        if (ListKursi.get(0).equals("true")) {
-            tgla1.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tgla1.setDisable(false);
-        }
+        if (ListKursi.get(0).equals("true")) {tgla1.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tgla1.setDisable(false);}
 
-        if (ListKursi.get(1).equals("true")) {
-            tgla2.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tgla2.setDisable(false);
-        }
+        if (ListKursi.get(1).equals("true")) {tgla2.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tgla2.setDisable(false);}
 
-        if (ListKursi.get(2).equals("true")) {
-            tgla3.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tgla3.setDisable(false);
-        }
-        if (ListKursi.get(3).equals("true")) {
-            tgla4.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tgla4.setDisable(false);
-        }
-        if (ListKursi.get(4).equals("true")) {
-            tgla5.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tgla5.setDisable(false);
-        }
-        if (ListKursi.get(5).equals("true")) {
-            tgla6.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tgla6.setDisable(false);
-        }
-        if (ListKursi.get(6).equals("true")) {
-            tgla7.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tgla7.setDisable(false);
-        }
-        if (ListKursi.get(7).equals("true")) {
-            tgla8.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tgla8.setDisable(false);
-        }
-        if (ListKursi.get(8).equals("true")) {
-            tglb1.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tglb1.setDisable(false);
-        }
-        if (ListKursi.get(9).equals("true")) {
-            tglb2.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tglb2.setDisable(false);
-        }
-        if (ListKursi.get(10).equals("true")) {
-            tglb3.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tglb3.setDisable(false);
-        }
-        if (ListKursi.get(11).equals("true")) {
-            tglb4.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tglb4.setDisable(false);
-        }
-        if (ListKursi.get(12).equals("true")) {
-            tglb5.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tglb5.setDisable(false);
-        }
-        if (ListKursi.get(13).equals("true")) {
-            tglb6.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tglb6.setDisable(false);
-        }
-        if (ListKursi.get(14).equals("true")) {
-            tglb7.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tglb7.setDisable(false);
-        }
-        if (ListKursi.get(15).equals("true")) {
-            tglb8.setDisable(true);
-        } else if (ListKursi.get(0).equals("false")) {
-            tglb8.setDisable(false);
-        }
+        if (ListKursi.get(2).equals("true")) {tgla3.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tgla3.setDisable(false);}
+        
+        if (ListKursi.get(3).equals("true")) {tgla4.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tgla4.setDisable(false);}
+        
+        if (ListKursi.get(4).equals("true")) {tgla5.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tgla5.setDisable(false);}
+        
+        if (ListKursi.get(5).equals("true")) {tgla6.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tgla6.setDisable(false);}
+        
+        if (ListKursi.get(6).equals("true")) {tgla7.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tgla7.setDisable(false);}
+        
+        if (ListKursi.get(7).equals("true")) {tgla8.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tgla8.setDisable(false);}
+        
+        if (ListKursi.get(8).equals("true")) {tglb1.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tglb1.setDisable(false);}
+        
+        if (ListKursi.get(9).equals("true")) {tglb2.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tglb2.setDisable(false);}
+        
+        if (ListKursi.get(10).equals("true")) {tglb3.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tglb3.setDisable(false);}
+        
+        if (ListKursi.get(11).equals("true")) {tglb4.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tglb4.setDisable(false);}
+        
+        if (ListKursi.get(12).equals("true")) {tglb5.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tglb5.setDisable(false);}
+        
+        if (ListKursi.get(13).equals("true")) {tglb6.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tglb6.setDisable(false);}
+        
+        if (ListKursi.get(14).equals("true")) {tglb7.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tglb7.setDisable(false);}
+        
+        if (ListKursi.get(15).equals("true")) {tglb8.setDisable(true);} 
+        else if (ListKursi.get(0).equals("false")) {tglb8.setDisable(false);}
 
     }
 
     private int HitungTiket() {
         int Jumlah = 0;
-        if (tgla1.isSelected()) {
-            Jumlah += 1;
-        }
-        if (tgla2.isSelected()) {
-            Jumlah += 1;
-        }
-        if (tgla3.isSelected()) {
-            Jumlah += 1;
-        }
-        if (tgla4.isSelected()) {
-            Jumlah += 1;
-        }
-        if (tgla5.isSelected()) {
-            Jumlah += 1;
-        }
-        if (tgla6.isSelected()) {
-            Jumlah += 1;
-        }
-        if (tgla7.isSelected()) {
-            Jumlah += 1;
-        }
-        if (tgla8.isSelected()) {
-            Jumlah += 1;
-        }
-        if (tglb1.isSelected()) {
-            Jumlah += 1;
-        }
-        if (tglb2.isSelected()) {
-            Jumlah += 1;
-        }
-        if (tglb3.isSelected()) {
-            Jumlah += 1;
-        }
-        if (tglb4.isSelected()) {
-            Jumlah += 1;
-        }
-        if (tglb5.isSelected()) {
-            Jumlah += 1;
-        }
-        if (tglb6.isSelected()) {
-            Jumlah += 1;
-        }
-        if (tglb7.isSelected()) {
-            Jumlah += 1;
-        }
-        if (tglb8.isSelected()) {
-            Jumlah += 1;
-        }
+        if (tgla1.isSelected()) {Jumlah += 1;}
+        if (tgla2.isSelected()) {Jumlah += 1;}
+        if (tgla3.isSelected()) {Jumlah += 1;}
+        if (tgla4.isSelected()) {Jumlah += 1;}
+        if (tgla5.isSelected()) {Jumlah += 1;}
+        if (tgla6.isSelected()) {Jumlah += 1;}
+        if (tgla7.isSelected()) {Jumlah += 1;}
+        if (tgla8.isSelected()) {Jumlah += 1;}
+        if (tglb1.isSelected()) {Jumlah += 1;}
+        if (tglb2.isSelected()) {Jumlah += 1;}
+        if (tglb3.isSelected()) {Jumlah += 1;}
+        if (tglb4.isSelected()) {Jumlah += 1;}
+        if (tglb5.isSelected()) {Jumlah += 1;}
+        if (tglb6.isSelected()) {Jumlah += 1;}
+        if (tglb7.isSelected()) {Jumlah += 1;}
+        if (tglb8.isSelected()) {Jumlah += 1;}
         return Jumlah;
     }
-
+    
+    
+    
     private void SaveKursi() {
-        ArrayList<Detail_KursiModel> list = new ArrayList<>();
+        ArrayList<String> list = new ArrayList<>();
 
         if (!tgla1.isDisabled()) {
-            if (tgla1.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("301");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tgla1.isSelected()) {list.add("3"+ljadwal.getText()+"A1");}
         }
+        
         if (!tgla2.isDisabled()) {
-            if (tgla2.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("302");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tgla2.isSelected()) {list.add("3"+ljadwal.getText()+"A2");}
         }
-
+        
         if (!tgla3.isDisabled()) {
-            if (tgla3.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("303");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tgla3.isSelected()) {list.add("3"+ljadwal.getText()+"A3");}
         }
+        
         if (!tgla4.isDisabled()) {
-            if (tgla4.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("304");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tgla4.isSelected()) {list.add("3"+ljadwal.getText()+"A4");}
         }
 
         if (!tgla5.isDisabled()) {
-            if (tgla5.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("305");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tgla5.isSelected()) {list.add("3"+ljadwal.getText()+"A5");}
         }
+        
         if (!tgla6.isDisabled()) {
-            if (tgla6.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("306");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tgla6.isSelected()) {list.add("3"+ljadwal.getText()+"A6");}
         }
 
         if (!tgla7.isDisabled()) {
-            if (tgla7.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("307");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tgla7.isSelected()) {list.add("3"+ljadwal.getText()+"A7");}
         }
+        
         if (!tgla8.isDisabled()) {
-            if (tgla8.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("308");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tgla8.isSelected()) {list.add("3"+ljadwal.getText()+"A8");}
         }
 
         if (!tglb1.isDisabled()) {
-            if (tglb1.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("309");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tglb1.isSelected()) {list.add("3"+ljadwal.getText()+"B1");}
         }
+        
         if (!tglb2.isDisabled()) {
-            if (tglb2.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("310");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tglb2.isSelected()) {list.add("3"+ljadwal.getText()+"B2");}
         }
 
         if (!tglb3.isDisabled()) {
-            if (tglb3.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("311");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tglb3.isSelected()) {list.add("3"+ljadwal.getText()+"B3");}
         }
+        
         if (!tglb4.isDisabled()) {
-            if (tglb4.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("312");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tglb4.isSelected()) {list.add("3"+ljadwal.getText()+"B4");}
         }
 
         if (!tglb5.isDisabled()) {
-            if (tglb5.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("313");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tglb5.isSelected()) {list.add("3"+ljadwal.getText()+"B5");}
         }
+        
         if (!tglb6.isDisabled()) {
-            if (tglb6.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("314");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tglb6.isSelected()) {list.add("3"+ljadwal.getText()+"B6");}
         }
 
         if (!tglb7.isDisabled()) {
-            if (tglb7.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("315");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tglb7.isSelected()) {list.add("3"+ljadwal.getText()+"B7");}
         }
+        
         if (!tglb8.isDisabled()) {
-            if (tglb8.isSelected()) {
-                Detail_KursiModel s = new Detail_KursiModel();
-                s.setId_Jadwal(CBJadwal.getSelectionModel().getSelectedItem());
-                s.setId_Kursi("316");
-                s.setStatus("true");
-                list.add(s);
-            }
+            if (tglb8.isSelected()) {list.add("3"+ljadwal.getText()+"B8");}
         }
 
+        ModelDetilTransaksi dt = new ModelDetilTransaksi();
+        dt.setId_transaksi(dttrans.getModelTransaksi().getId_transaksi());
         for (int i = 0; i < list.size(); i++) {
-            dtkursi.setDetail_KursiModel(list.get(i));
-            if (dtkursi.update()) {
+            dtkursi.belikursi(list.get(i));
+            dt.setId_kursi(list.get(i));
+            dtdetil.setModelDetilTransaksi(dt);
+            if(dtdetil.insert()){}
+        }
+    }
+
+    
+    @FXML
+    private void HitungKlik(ActionEvent event) {
+        jumlahtiket.setText(String.valueOf(HitungTiket()));
+        harga = HitungTiket() * 30000;
+        
+       total.setText(String.valueOf(harga));
+    }
+
+
+    @FXML
+    private void Pesan(ActionEvent event) {
+        ModelTransaksi n = new ModelTransaksi();
+        
+        if(lidcust.getText()!="" &&  ljadwal.getText()!="" && jumlahtiket.getText()!="0"){
+        n.setId_jadwal(ljadwal.getText());
+        n.setId_customer(lidcust.getText());
+        n.setJumlah_tiket(Integer.valueOf(jumlahtiket.getText()));
+        n.setTotal_bayar(Integer.valueOf(total.getText()));
+        
+        ArrayList<String> List =FXMLDocumentController.dttrans.ListID();
+        String urutan;
+        if(!List.isEmpty()){
+           int urut = Integer.valueOf(List.get(List.size()-1).substring(1)) + 1;
+           if(urut<100){urutan = "00"+String.valueOf(urut);}
+           else if(urut<100){urutan = "0"+String.valueOf(urut);}
+           else {urutan = String.valueOf(urut);}
+       } else {
+           urutan ="001";
+       }
+        n.setId_transaksi("2"+urutan);
+        }
+        
+        if(FXMLDocumentController.dttrans.validasi(n.getId_transaksi())<=0){
+            FXMLDocumentController.dttrans.setModelTransaksi(n);
+            if(FXMLDocumentController.dttrans.insert()){
+               Alert a=new Alert(Alert.AlertType.INFORMATION,"Transaksi Berhasil Disimpan",ButtonType.OK);
+               SaveKursi();
+               a.showAndWait();
+               transaksi[0] = lnama.getText();
+               transaksi[1] = lnamafilm.getText();
+               transaksi[2] = lnamastudio.getText();
+               transaksi[3] = jumlahtiket.getText();
+               transaksi[4] = total.getText();
+               try{  
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("FXMLDisplayTiket.fxml"));    
+            Parent root = (Parent)loader.load();
+            Scene scene = new Scene(root);
+            Stage stg=new Stage();
+            stg.initModality(Modality.APPLICATION_MODAL);
+            stg.setResizable(false);
+            stg.setIconified(false);
+            stg.setScene(scene);
+            stg.show();        
+        } catch (IOException e){   e.printStackTrace();   }
+               batal(event);
+               
             } else {
-                Alert a = new Alert(Alert.AlertType.ERROR, "Data gagal diubah", ButtonType.OK);
-                a.showAndWait();
+               Alert a=new Alert(Alert.AlertType.ERROR,"Data gagal disimpan",ButtonType.OK);
+               a.showAndWait();            
             }
         }
-
     }
 
     @FXML
-    private void HitungKlik(ActionEvent event) {
-        txtjumlahtiket.setText(String.valueOf(HitungTiket()));
-        harga = HitungTiket() * 30000;
+    private void batal(ActionEvent event) {
+        lidcust.setText("");
+        lnama.setText("");
+        lnomor.setText("");
+        lemail.setText("");
         
-       txtharga.setText(String.valueOf(harga));
+        ljadwal.setText("");
+        
+        lnamastudio.setText("");
+        lnamafilm.setText("");
+        ltanggal.setText("");
+        lmulai.setText("");
+        lselesai.setText("");
+        
+        jumlahtiket.setText("");
+        total.setText("");
+        
+        tgla1.setDisable(false);
+        tgla2.setDisable(false);
+        tgla3.setDisable(false);
+        tgla4.setDisable(false);
+        tgla5.setDisable(false);
+        tgla6.setDisable(false);
+        tgla7.setDisable(false);
+        tgla8.setDisable(false);
+        
+        tglb1.setDisable(false);
+        tglb2.setDisable(false);
+        tglb3.setDisable(false);
+        tglb4.setDisable(false);
+        tglb5.setDisable(false);
+        tglb6.setDisable(false);
+        tglb7.setDisable(false);
+        tglb8.setDisable(false);
+        
+        tgla1.setSelected(false);
+        tgla2.setSelected(false);
+        tgla3.setSelected(false);
+        tgla4.setSelected(false);
+        tgla5.setSelected(false);
+        tgla6.setSelected(false);
+        tgla7.setSelected(false);
+        tgla8.setSelected(false);
+        
+        tglb1.setSelected(false);
+        tglb2.setSelected(false);
+        tglb3.setSelected(false);
+        tglb4.setSelected(false);
+        tglb5.setSelected(false);
+        tglb6.setSelected(false);
+        tglb7.setSelected(false);
+        tglb8.setSelected(false);
+        
     }
 
+    
 }

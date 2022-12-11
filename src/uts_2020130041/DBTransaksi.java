@@ -15,68 +15,37 @@ import javafx.collections.ObservableList;
  * @author Arby Sofyan
  */
 public class DBTransaksi {
-    private TransaksiModel dt = new TransaksiModel();
-
-    public TransaksiModel getTransaksiModel() {
-        return dt;
-    }
-
-    public void setTransaksiModel(TransaksiModel s) {
-        dt = s;
-    }
-
-    //LookUP
-    /*
-    public ObservableList<TransaksiModel> LookUp(String fld, String dt) {
-        try {
-            ObservableList<TransaksiModel> tableData = FXCollections.observableArrayList();
-            Koneksi con = new Koneksi();
-            con.bukaKoneksi();
-            con.statement = con.dbKoneksi.createStatement();
-            ResultSet rs = con.statement.executeQuery("Select NPM, Nama, Alamat from transaksi where " + fld + " like '%" + dt + "%'");
-            int i = 1;
-            while (rs.next()) {
-                TransaksiModel d = new TransaksiModel();
-                d.setNPM(rs.getString("NPM"));
-                d.setNama(rs.getString("Nama"));
-                d.setAlamat(rs.getString("Alamat"));
-                tableData.add(d);
-                i++;
-            }
-            con.tutupKoneksi();
-            return tableData;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }*/
+    
+    private ModelTransaksi dt = new ModelTransaksi();
+    public ModelTransaksi getModelTransaksi() {return dt;}
+    public void setModelTransaksi(ModelTransaksi s) {dt = s;}
 
     
-    public ObservableList<TransaksiModel> Load() {
+    public ObservableList<ModelTransaksi> Load() {
         try {
-            ObservableList<TransaksiModel> TableData = FXCollections.observableArrayList();
+            ObservableList<ModelTransaksi> TableData = FXCollections.observableArrayList();
             Koneksi con = new Koneksi();
             con.bukaKoneksi();
             con.statement = con.dbKoneksi.createStatement();
 
             ResultSet rs = con.statement.executeQuery(
-                    "Select Id_Transaksi, Id_Customer, Judul_Film, Waktu_Mulai, Waktu_Selesai, Jumlah_Tiket, Harga_Bayar from transaksi t "
-                            + "join jadwal_film j on (t.Id_Jadwal = j.Id_Jadwal)");
-
+                    "Select id_transaksi, judul_film, nama_studio, nama, jumlah_tiket, total_bayar from transaksi t " +
+                    "join customer c on (t.id_customer = c.id_customer) " +
+                    "join jadwal_film j ON (t.id_jadwal = j.id_jadwal) " +
+                    "join studio s on (j.id_studio = s.id_studio) " +
+                    "join film f ON (j.id_film = f.id_film)");
             int i = 1;
             while (rs.next()) {
-                TransaksiModel d = new TransaksiModel();
-                d.setId_Transaksi(rs.getString("Id_Transaksi"));
-                d.setId_Customer(rs.getString("Id_Customer"));
-                d.setJudul_Film(rs.getString("Judul_Film"));
-                d.setJam_Mulai(rs.getTime("Waktu_Mulai"));
-                d.setJam_Selesai(rs.getTime("Waktu_Selesai"));
-                d.setJumlah_Tiket(rs.getInt("Jumlah_Tiket"));
-                d.setHarga_Bayar(rs.getInt("Harga_Bayar"));
+                ModelTransaksi d = new ModelTransaksi();
+                d.setId_transaksi(rs.getString("id_transaksi"));
+                d.setJudul_film(rs.getString("judul_film"));
+                d.setNama_studio(rs.getString("nama_studio"));
+                d.setNama_customer(rs.getString("nama"));
+                d.setJumlah_tiket(rs.getInt("jumlah_tiket"));
+                d.setTotal_bayar(rs.getInt("total_bayar"));
                 TableData.add(d);
                 i++;
             }
-
             con.tutupKoneksi();
             return TableData;
         } catch (Exception e) {
@@ -84,6 +53,10 @@ public class DBTransaksi {
             return null;
         }
     }
+    
+    
+    
+   
 
     public int validasi(String nomor) {
         int val = 0;
@@ -91,7 +64,7 @@ public class DBTransaksi {
             Koneksi con = new Koneksi();
             con.bukaKoneksi();
             con.statement = con.dbKoneksi.createStatement();
-            ResultSet rs = con.statement.executeQuery("select count(*) as jml from transaksi where Id_Transaksi = '" + nomor + "'");
+            ResultSet rs = con.statement.executeQuery("select count(*) as jml from transaksi where id_transaksi = '" + nomor + "'");
             while (rs.next()) {
                 val = rs.getInt("jml");
             }
@@ -101,19 +74,19 @@ public class DBTransaksi {
         }
         return val;
     }
-
+    
+    
     public boolean insert() {
         boolean berhasil = false;
         Koneksi con = new Koneksi();
-        
         try {
             con.bukaKoneksi();
-            con.preparedStatement = con.dbKoneksi.prepareStatement("insert into transaksi (Id_Transaksi, Id_Customer, Harga_Bayar, Jumlah_Tiket, Id_Jadwal) values (?,?,?,?,?)");
-            con.preparedStatement.setString(1, getTransaksiModel().getId_Transaksi());
-            con.preparedStatement.setString(2, getTransaksiModel().getId_Customer());
-            con.preparedStatement.setInt(3, getTransaksiModel().getHarga_Bayar());
-            con.preparedStatement.setInt(4, getTransaksiModel().getJumlah_Tiket());
-            con.preparedStatement.setString(5, getTransaksiModel().getId_Jadwal());
+            con.preparedStatement = con.dbKoneksi.prepareStatement("insert into transaksi (id_transaksi, id_jadwal, id_customer, jumlah_tiket, total_bayar) values (?,?,?,?,?)");
+            con.preparedStatement.setString(1, getModelTransaksi().getId_transaksi());
+            con.preparedStatement.setString(2, getModelTransaksi().getId_jadwal());
+            con.preparedStatement.setString(3, getModelTransaksi().getId_customer());
+            con.preparedStatement.setInt(4, getModelTransaksi().getJumlah_tiket());
+            con.preparedStatement.setInt(5, getModelTransaksi().getTotal_bayar());
             con.preparedStatement.executeUpdate();
             berhasil = true;
         } catch (Exception e) {
@@ -124,13 +97,13 @@ public class DBTransaksi {
             return berhasil;
         }
     }
-
+    
     public boolean delete(String nomor) {
         boolean berhasil = false;
         Koneksi con = new Koneksi();
         try {
             con.bukaKoneksi();;
-            con.preparedStatement = con.dbKoneksi.prepareStatement("delete from transaksi where Id_Transaksi  = ? ");
+            con.preparedStatement = con.dbKoneksi.prepareStatement("delete from transaksi where id_transaksi  = ? ");
             con.preparedStatement.setString(1, nomor);
             con.preparedStatement.executeUpdate();
             berhasil = true;
@@ -141,47 +114,54 @@ public class DBTransaksi {
             return berhasil;
         }
     }
-
-    public boolean update() {
-        boolean berhasil = false;
-        Koneksi con = new Koneksi();
+    
+    
+    public ObservableList<ModelTransaksi> LookUp(String dt) {
         try {
+            ObservableList<ModelTransaksi> tableData = FXCollections.observableArrayList();
+            Koneksi con = new Koneksi();
             con.bukaKoneksi();
-            con.preparedStatement = con.dbKoneksi.prepareStatement(
-                    "update transaksi set Id_Customer = ?, Harga_Bayar = ?, Jumlah_Tiket = ?, Id_Jadwal = ?  where  Id_Transaksi = ? ; ");
-            con.preparedStatement.setString(1, getTransaksiModel().getId_Customer());
-            con.preparedStatement.setInt(2, getTransaksiModel().getHarga_Bayar());
-            con.preparedStatement.setInt(3, getTransaksiModel().getJumlah_Tiket());
-            con.preparedStatement.setString(4, getTransaksiModel().getId_Jadwal());
-            con.preparedStatement.setString(5, getTransaksiModel().getId_Transaksi());
-            con.preparedStatement.executeUpdate();
-            berhasil = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            berhasil = false;
-        } finally {
+            con.statement = con.dbKoneksi.createStatement();
+            ResultSet rs = con.statement.executeQuery("Select id_transaksi, judul_film, nama_studio, nama, jumlah_tiket, total_bayar from transaksi t " +
+                    "join customer c on (t.id_customer = c.id_customer) " +
+                    "join jadwal_film j ON (t.id_jadwal = j.id_jadwal) " +
+                    "join studio s on (j.id_studio = s.id_studio) " +
+                    "join film f ON (j.id_film = f.id_film) where judul_film like '%" + dt + "%' or nama like '%" + dt + "%' or nama_studio like '%" + dt + "%' ");
+            int i = 1;
+            while (rs.next()) {
+                ModelTransaksi d = new ModelTransaksi();
+                d.setId_transaksi(rs.getString("id_transaksi"));
+                d.setJudul_film(rs.getString("judul_film"));
+                d.setNama_studio(rs.getString("nama_studio"));
+                d.setNama_customer(rs.getString("nama"));
+                d.setJumlah_tiket(rs.getInt("jumlah_tiket"));
+                d.setTotal_bayar(rs.getInt("total_bayar"));
+                tableData.add(d);
+                i++;
+            }
             con.tutupKoneksi();
-            return berhasil;
+            return tableData;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
         }
     }
     
-    public ArrayList<String> CheckKode(){
+    public ArrayList<String> ListID(){
         try {
             ArrayList<String> List = new ArrayList();
             Koneksi con = new Koneksi();            
             con.bukaKoneksi();
             con.statement = con.dbKoneksi.createStatement();
-            ResultSet rs = con.statement.executeQuery("select Id_Transaksi from transaksi");
+            ResultSet rs = con.statement.executeQuery("select id_transaksi from transaksi");
             while (rs.next()) {
-                List.add(rs.getString("Id_Transaksi"));
+                List.add(rs.getString("id_transaksi"));
             }
             return List;
         } catch (Exception e) {            
             e.printStackTrace();            
             return null;        
         }
-        
-        
     }
     
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uts_2020130041.FXMLHalamanPetugasController">
+   <children>
+      <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="600.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Transaksi">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#ITrans" text="Input Transaksi" />
+                  <MenuItem mnemonicParsing="false" onAction="#DTrans" text="Display Transaksi" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Jadwal">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#IJadwal" text="Input Jadwal" />
+                  <MenuItem mnemonicParsing="false" onAction="#DJadwal" text="Display Jadwal" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Customer">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#ICustomer" text="Input Customer" />
+                  <MenuItem mnemonicParsing="false" onAction="#DCustomer" text="Display Customer " />
+              </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Film">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#IFilm" text="Input Film" />
+                  <MenuItem mnemonicParsing="false" onAction="#DFilm" text="Display Film" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Studio">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#IStudio" text="Input Studio" />
+                  <MenuItem mnemonicParsing="false" onAction="#DStudio" text="Display Studio" />
+              </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="525.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="uts_2020130041.FXMLPilihFilmController">
+   <children>
+      <Label layoutX="40.0" layoutY="110.0" text="Genre" />
+      <Label fx:id="genre" layoutX="80.0" layoutY="110.0" />
+      <TextField fx:id="txtcari" layoutX="321.0" layoutY="106.0" onKeyPressed="#Cari" />
+      <Label layoutX="274.0" layoutY="110.0" text="Search" />
+      <Label fx:id="namafilm" layoutX="229.0" layoutY="80.0" />
+      <Label fx:id="idfilm" layoutX="104.0" layoutY="80.0" />
+      <Label layoutX="163.0" layoutY="80.0" text="Nama Film " />
+      <Label layoutX="40.0" layoutY="80.0" text="ID Film" />
+      <Label layoutX="40.0" layoutY="45.0" text="Pilih Film">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tbvfilm" layoutX="40.0" layoutY="145.0" onMouseClicked="#PilihID" prefHeight="172.0" prefWidth="430.0">
+         <columns>
+            <TableColumn prefWidth="75.0" text="C1" />
+            <TableColumn prefWidth="75.0" text="C2" />
+         </columns>
+      </TableView>
+      <Button fx:id="btnpilih" layoutX="292.0" layoutY="336.0" mnemonicParsing="false" onAction="#pilihklik" prefHeight="25.0" prefWidth="86.0" text="Pilih" />
+      <Button fx:id="btnbatal" layoutX="384.0" layoutY="336.0" mnemonicParsing="false" onAction="#batalklik" prefHeight="21.0" prefWidth="86.0" text="Batal" />
+   </children>
+</AnchorPane>

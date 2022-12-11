@@ -27,7 +27,7 @@ public Koneksi() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             dbKoneksi = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/Arby?user=root&password=4Rb1c00l");
+                    "jdbc:mysql://localhost:3306/pbol?user=root&password=4Rb1c00l");
         } catch (Exception e) {
             e.printStackTrace();
         }
